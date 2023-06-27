@@ -2,16 +2,16 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.define "server1" do |server1|
-    server1.vm.box = "centos/7"
+  config.vm.define "AlmaLinux" do |server1|
+    server1.vm.box = "almalinux/8"
     server1.vm.provision "shell", inline: <<-SHELL
-      yum install -y httpd
+      dnf install -y httpd
       systemctl enable httpd
       systemctl start httpd
     SHELL
   end
-  config.vm.define "server2" do |server2|
-    server2.vm.box = "debian/bullseye64"
+  config.vm.define "Debian12" do |server2|
+    server2.vm.box = "debian/bookworm64"
     server2.vm.provision "shell", inline: <<-SHELL
       apt-get update
       apt-get install -y apache2
