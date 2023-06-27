@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.define "server1" do |server1|
+    server1.vm.box = "centos/7"
+    server1.vm.provision "shell", inline: <<-SHELL
+      yum install -y httpd
+      systemctl enable httpd
+      systemctl start httpd
+    SHELL
+  end
+  config.vm.define "server2" do |server2|
+    server2.vm.box = "debian/bullseye64"
+    server2.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+      apt-get install -y apache2
+    SHELL
+  end
+  config.vm.provision "shell", inline: <<-SHELL
+    id devops
+    if [ "$?" -ne 0 ]; then
+      useradd -m -d /home/devops -s /bin/bash devops
+    fi
+  SHELL
+end
